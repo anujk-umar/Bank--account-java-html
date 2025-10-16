@@ -1,2 +1,1 @@
-# Bank--account-java-html
-Bank account management
+# bank-account-java-html

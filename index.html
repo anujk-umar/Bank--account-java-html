@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Account Management | Java GUI Project</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #000000, #001a3c);
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 10px;
+    }
+
+    header h1 {
+      font-size: 2.3rem;
+      color: #66aaff;
+      text-shadow: 0 0 10px #0050ff;
+    }
+
+    header p {
+      color: #a5baff;
+      font-size: 1.1rem;
+    }
+
+    .image-container {
+      margin: 30px 0;
+      box-shadow: 0 0 30px rgba(0, 80, 255, 0.3);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .image-container img {
+      width: 100%;
+      max-width: 550px;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .content {
+      max-width: 900px;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .content h2 {
+      color: #5daeff;
+      text-shadow: 0 0 8px #0077ff;
+    }
+
+    .content p {
+      color: #cfd8ff;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .code-section {
+      background-color: rgba(10, 20, 40, 0.9);
+      border: 1px solid rgba(100, 150, 255, 0.4);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 30px 0;
+      width: 95%;
+      max-width: 950px;
+      text-align: left;
+      display: none;
+      white-space: pre;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 500px;
+      font-family: "Consolas", "Courier New", monospace;
+      color: #d1e3ff;
+      box-shadow: 0 0 25px rgba(0, 100, 255, 0.25);
+    }
+
+    .toggle-btn {
+      background: linear-gradient(90deg, #0040ff, #0080ff);
+      border: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 12px 24px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 120, 255, 0.6);
+    }
+
+    .toggle-btn:hover {
+      background: linear-gradient(90deg, #0060ff, #00a0ff);
+      box-shadow: 0 0 20px rgba(0, 160, 255, 0.8);
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: auto;
+      background-color: #010817;
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+      color: #7a90ff;
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(100, 150, 255, 0.2);
+    }
+
+    footer a {
+      color: #8fb9ff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: #ffffff;
+      text-shadow: 0 0 10px #007bff;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🏦 Bank Account Management System</h1>
+    <p>A modern Java Swing GUI Project demonstrating deposits, withdrawals, and balance checks.</p>
+  </header>
+
+  <div class="image-container">
+    <img src="Sources/BA.jpg" alt="Bank Account GUI Screenshot">
+  </div>
+
+  <div class="content">
+    <h2>💡 Project Overview</h2>
+    <p>
+      This project simulates core banking operations through a graphical interface built in Java Swing.
+      It allows users to deposit funds, withdraw money, and check their balance — all styled with a modern dark-blue theme.
+      The program uses object-oriented design via a <b>BankAccount</b> class that encapsulates data and functionality.
+    </p>
+
+    <button class="toggle-btn" onclick="toggleCode()">View Full Java Code</button>
+
+    <div class="code-section" id="codeSection">
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class BankAccount {
+    private String accountHolder;
+    private double balance;
+
+    public BankAccount(String accountHolder, double balance) {
+        this.accountHolder = accountHolder;
+        this.balance = balance;
+    }
+
+    public String getAccountHolder() {
+        return accountHolder;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0)
+            balance += amount;
+    }
+
+    public boolean withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+}
+
+public class BankAccountGUI extends JFrame implements ActionListener {
+    private BankAccount account;
+    private JLabel nameLabel, balanceLabel, messageLabel;
+    private JTextField amountField;
+    private JButton depositBtn, withdrawBtn, checkBalanceBtn;
+
+    public BankAccountGUI() {
+        account = new BankAccount("Anurag Singh Chauhan", 1000.00);
+        setTitle("🏦 Bank Account Management");
+        setSize(450, 350);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                Color color1 = new Color(25, 25, 35);
+                Color color2 = new Color(45, 45, 65);
+                GradientPaint gp = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
+                g2d.setPaint(gp);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        mainPanel.setLayout(new GridLayout(6, 1, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+
+        nameLabel = new JLabel("👤 " + account.getAccountHolder(), JLabel.CENTER);
+        nameLabel.setFont(new Font("Poppins", Font.BOLD, 18));
+        nameLabel.setForeground(Color.WHITE);
+
+        balanceLabel = new JLabel("💰 Balance: ₹" + account.getBalance(), JLabel.CENTER);
+        balanceLabel.setFont(new Font("Poppins", Font.PLAIN, 16));
+        balanceLabel.setForeground(new Color(180, 220, 255));
+
+        amountField = new JTextField();
+        amountField.setHorizontalAlignment(JTextField.CENTER);
+        amountField.setFont(new Font("Poppins", Font.PLAIN, 14));
+        amountField.setForeground(Color.WHITE);
+        amountField.setBackground(new Color(40, 40, 60));
+        amountField.setCaretColor(Color.WHITE);
+        amountField.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(new Color(100, 100, 150)),
+                "Enter Amount", 0, 0, new Font("Poppins", Font.PLAIN, 12), new Color(160, 160, 255)));
+
+        depositBtn = createStyledButton("Deposit");
+        withdrawBtn = createStyledButton("Withdraw");
+        checkBalanceBtn = createStyledButton("Check Balance");
+
+        depositBtn.addActionListener(this);
+        withdrawBtn.addActionListener(this);
+        checkBalanceBtn.addActionListener(this);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(depositBtn);
+        buttonPanel.add(withdrawBtn);
+        buttonPanel.add(checkBalanceBtn);
+
+        messageLabel = new JLabel("", JLabel.CENTER);
+        messageLabel.setFont(new Font("Poppins", Font.ITALIC, 13));
+        messageLabel.setForeground(new Color(160, 255, 160));
+
+        mainPanel.add(nameLabel);
+        mainPanel.add(balanceLabel);
+        mainPanel.add(amountField);
+        mainPanel.add(buttonPanel);
+        mainPanel.add(messageLabel);
+
+        add(mainPanel, BorderLayout.CENTER);
+        UIManager.put("Button.select", new Color(60, 60, 80));
+        setVisible(true);
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Poppins", Font.BOLD, 13));
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(60, 60, 90));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createLineBorder(new Color(100, 100, 180), 1, true));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(90, 90, 140));
+                button.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 255), 2, true));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(new Color(60, 60, 90));
+                button.setBorder(BorderFactory.createLineBorder(new Color(100, 100, 180), 1, true));
+            }
+        });
+        return button;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            double amount = Double.parseDouble(amountField.getText());
+            if (e.getSource() == depositBtn) {
+                account.deposit(amount);
+                messageLabel.setText("✅ Deposited ₹" + amount + " successfully!");
+            } else if (e.getSource() == withdrawBtn) {
+                if (account.withdraw(amount))
+                    messageLabel.setText("💸 Withdrawn ₹" + amount + " successfully!");
+                else
+                    messageLabel.setText("⚠️ Insufficient balance!");
+            }
+        } catch (NumberFormatException ex) {
+            messageLabel.setText("❗ Please enter a valid amount!");
+        }
+
+        if (e.getSource() == checkBalanceBtn) {
+            messageLabel.setText("💰 Current Balance: ₹" + account.getBalance());
+        }
+
+        balanceLabel.setText("💰 Balance: ₹" + account.getBalance());
+        amountField.setText("");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new BankAccountGUI());
+    }
+}
+    </div>
+  </div>
+
+  <footer>
+    Made with ❤️ by <a href="https://github.com/anujk-umar" target="_blank">Anuj kumar</a>
+  </footer>
+
+  <script>
+    function toggleCode() {
+      const section = document.getElementById('codeSection');
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+
+</body>
+</html>
+
+
